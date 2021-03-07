@@ -10,7 +10,7 @@ class Jetbot():
         self.visited = [self.position + [self.heading]]
         self.Horizon = 15  # A tuning parameter 
         self.Angle = 3.1415 / 12  # Turning angle at each step 
-        self.StepLen = 5
+        self.StepLen = 5  # Step Length, should be shorter than Horizon
 
     def right(self):
         self.heading -= self.Angle
@@ -46,15 +46,25 @@ class Jetbot():
         target_point = cmds[-self.Horizon]
         target_heading = self.checkHeading(target_point,self.position)
         while abs(self.heading - target_heading) > 0.27:
+            # turn until it reaches a desired angle,
+            # the angle should be slightly larger than self.Angle
             if target_heading > self.heading:
                 self.left() 
             else:
                 self.right() 
-        if not self.can_step(obs_set):  # check if one step further will collide to choose the right side
+        i = 1 
+        while not self.can_step(obs_set):  # check if one step further will collide to choose the right side
             if target_heading > self.heading:  
-                self.left() 
+                if i % 2 ==1: 
+                    for _ in range(i): self.left() 
+                if i % 2 == 0: 
+                    for _ in range(i): self.right()  
             else: 
-                self.right()
+                if i % 2 ==1: 
+                    for _ in range(i): self.right() 
+                if i % 2 == 0: 
+                    for _ in range(i): self.left()   
+            i += 1 
         self.forward() 
         print('Position: ',self.position, 
             'Heading: ', self.heading *360/(2*3.14),
@@ -69,20 +79,20 @@ class Jetbot():
     def checkHeading(self, pHead, pBody):
         ''' check where the jetbot is heading for
         :return: the theta of heading angle '''
-        pi = 3.1415926
+        Pi = 3.1415926
         # pHead = objs['Target'][0] 
         # pBody = objs['Jetbot'][0] 
         x1, y1 = pHead[0], pHead[1] 
         x2, y2 = pBody[0], pBody[1] 
         dx, dy = x1-x2, y1-y2 
         if dx == 0: 
-            return pi if dy > 0 else -pi 
+            return Pi if dy > 0 else -Pi 
         if dx > 0:  # first quadrant and forth quadrant 
             return atan((y1-y2)/(x1-x2))
         if dx < 0 and dy > 0:  # second quadrant 
-            return atan((y1-y2)/(x1-x2)) + pi  
+            return atan((y1-y2)/(x1-x2)) + Pi  
         if dx < 0 and dy < 0:  # third quadrant 
-            return atan((y1-y2)/(x1-x2)) - pi 
+            return atan((y1-y2)/(x1-x2)) - Pi 
     
     def can_step(self, obs): 
         """ check if jetbot can go in that direction
@@ -94,7 +104,7 @@ class Jetbot():
         return False if (x_test,y_test) in obs else True 
 
 if __name__ == '__main__':
-    Pi = 3.1415
-    print(Pi/12  * 180/ Pi)
-    print(-29.418124371804982 * Pi / 180)
+    PI = 3.1415
+    print(PI/12  * 180/ PI)
+    print(-29.418124371804982 * PI / 180)
     
