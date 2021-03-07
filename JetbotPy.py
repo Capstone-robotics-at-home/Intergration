@@ -8,7 +8,7 @@ class Jetbot():
         self.position = list(position)
         self.heading =  self.checkHeading(grabber_p,position)
         self.visited = [self.position + [self.heading]]
-        self.Horizon = 15  # A tuning parameter 
+        self.Horizon = 10  # A tuning parameter 
         self.Angle = 3.1415 / 12  # Turning angle at each step 
         self.StepLen = 10  # Step Length, should be shorter than Horizon
 
