@@ -37,7 +37,8 @@ class Astar:
             _, s = heapq.heappop(self.OPEN)
             self.ClOSED.append(s)
 
-            if s == self.s_goal:
+            if abs(s[0] - self.s_goal[0]) + abs(s[1] - self.s_goal[1]) < 10:  # tuning param
+                end_point = s 
                 break  # stop condition
 
             for s_n in self.get_neighbor(s):
@@ -53,14 +54,14 @@ class Astar:
                     self.PARENT[s_n] = s
                     heapq.heappush(self.OPEN, (self.f_value(s_n), s_n))
 
-        return self.extract_path(self.PARENT), self.ClOSED
+        return self.extract_path(self.PARENT,end_point), self.ClOSED
 
-    def extract_path(self, PARENT):
+    def extract_path(self, PARENT, end ):
         """ extract the path based on the parent set
         :return: the planning path """
 
-        path = [self.s_goal]
-        s = self.s_goal
+        path = [end]
+        s = end 
 
         while True:
             s = PARENT[s]
@@ -139,10 +140,10 @@ class Astar:
 
 if __name__ == '__main__':
 
-    objects = {'Jetbot': [(95, 46), 83, 107, 63, 28], 
-        'Obstacle': [(110, 30), 100,120,80,0], 
-        'Target': [(134, 17), 130, 137, 24, 9], 
-        'Grabber': [(105, 62), 100, 110, 72, 52]}
+    objects = {'Jetbot': [(953, 461), 834, 1073, 636, 287], 
+        'Obstacle': [(1100, 300), 1000,1200,800,0], 
+        'Target': [(1342, 170), 1308, 1377, 249, 92], 
+        'Grabber': [(1054, 626), 1003, 1106, 728, 525]}
     obstacle_ls = objects['Obstacle']
     s_start = objects['Jetbot'][0]
     s_goal = objects['Target'][0] 

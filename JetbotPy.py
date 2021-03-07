@@ -10,7 +10,7 @@ class Jetbot():
         self.visited = [self.position + [self.heading]]
         self.Horizon = 15  # A tuning parameter 
         self.Angle = 3.1415 / 12  # Turning angle at each step 
-        self.StepLen = 5  # Step Length, should be shorter than Horizon
+        self.StepLen = 10  # Step Length, should be shorter than Horizon
 
     def right(self):
         self.heading -= self.Angle
