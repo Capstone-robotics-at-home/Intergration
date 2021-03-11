@@ -1,4 +1,4 @@
-from JetbotPy import Jetbot
+from JetbotPy import Decider
 from Astar import Astar
 from Path_Utils import plotting
 
@@ -9,9 +9,11 @@ def Astar_search(objects, jetbot):
     obstacle_ls = objects['Obstacle']
     s_start = jetbot.get_position()
     s_goal = objects['Target'][0]
+    jetbot_size = objects['Jetbot'][-4:]
     if type(obstacle_ls[0]) == type(()):  # if there is only one obstacle:
         obstacle_ls = [obstacle_ls]
 
+    # astar = Astar(s_start, s_goal, obstacle_ls,jetbot_size)
     astar = Astar(s_start, s_goal, obstacle_ls)
     path_sol, visited = astar.searching()
     return path_sol
@@ -30,16 +32,18 @@ def get_obs_set(obstacle_list):
 
     return obs
 
-def traj_sim(objects):
-    jetbot_pos = objects['Jetbot'][0]
+
+def realtime_search(objects):
+    jetbot_pos, jetbot_size = objects['Jetbot'][0], objects['Jetbot'][-4:]
     grab_pos = objects['Grabber'][0]
-    bot = Jetbot(jetbot_pos, grab_pos)
+    decider = Decider(jetbot_pos, grab_pos)
 
     obstacle_ls = objects['Obstacle']
     s_start = objects['Jetbot'][0]
     s_goal = objects['Target'][0]
     if type(obstacle_ls[0]) == type(()):  # if there is only one obstacle:
         obstacle_ls = [obstacle_ls]
+    # astar = Astar(s_start, s_goal, obstacle_ls, jetbot_size)
     astar = Astar(s_start, s_goal, obstacle_ls)
     Original_path, visited = astar.searching()
 
@@ -49,27 +53,24 @@ def traj_sim(objects):
     path = Original_path
     obs_set = get_obs_set(obstacle_ls)
 
-    while len(path) > 10:
-        bot.jetbot_step(path, obs_set)
-        path = Astar_search(objects, bot)
+    while len(path) > decider.Horizon:
+        decider.jetbot_step(path, obs_set)
+        path = Astar_search(objects, decider)
 
-
-    trajectory = bot.get_trajectory()
+    trajectory = decider.get_trajectory()
     print('Terminate, Total number of movements is: %d' % len(trajectory))
     plot.plot_traj(Original_path, trajectory)
 
 
 if __name__ == '__main__':
-    objects = {'Jetbot': [(953, 461), 834, 1073, 636, 287], 
-            'Obstacle': [(1100, 300), 1000,1200,800,200], 
-            'Target': [(1342, 270), 1308, 1377, 249, 92], 
-            'Grabber': [(1054, 626), 1003, 1106, 728, 525]}
-
+    # objects = {'Jetbot': [(953, 461), 800, 1000, 600, 200],
+    #            'Obstacle': [(1100, 300), 1000, 1200, 800, 200],
+    #            'Target': [(1342, 270), 1308, 1377, 249, 92],
+    #            'Grabber': [(1054, 626), 1003, 1106, 728, 525]}
 
     objects = {'Jetbot': [(210, 462), 107, 314, 577, 347],
                'Obstacle': [(758, 292), 693, 823, 388, 180],
                'Target': [(1070, 199), 1036, 1105, 256, 143],
                'Grabber': [(174, 591), 141, 207, 660, 523]}
 
-    traj_sim(objects)
-    
+    realtime_search(objects)

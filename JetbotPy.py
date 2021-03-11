@@ -1,22 +1,23 @@
 from math import tan,sin,cos,atan 
 
-class Jetbot():
+class Decider():
     '''
-    Jetbot class for jetbot movement 
+    Decider class for jetbot motion decision 
     '''
     def __init__(self, position, grabber_p):
         self.position = list(position)
         self.heading =  self.checkHeading(grabber_p,position)
         self.visited = [self.position + [self.heading]]
-        self.Horizon = 10  # A tuning parameter 
+        self.Horizon = 3  # A tuning parameter 
         self.Angle = 3.1415 / 12  # Turning angle at each step 
-        self.StepLen = 10  # Step Length, should be shorter than Horizon
+        self.StepLen = 30  # Step Length, should be shorter than Horizon
+        self.target_file = open('../Capstone_Simulation/gym_rev/cmd.txt','w')
 
     def right(self):
         self.heading -= self.Angle
         self.visited.append(self.position + [self.heading])
 
-    def left(self):
+    def left(self): 
         self.heading += self.Angle
         self.visited.append(self.position + [self.heading])
 
@@ -27,15 +28,12 @@ class Jetbot():
         self.position = [x,y]
         self.visited.append([x,y,self.heading])
         
+    def communicator(self, cmd):
+        ''' A tool to transmit cmd line to jetbot '''
+        self.target_file.write(cmd)
 
-
-    def back(self):
-        """ It might not be used in real-time movement """
-        x, y = self.position 
-        x -= 10 
-        y -= int(10 * tan(self.heading))
-        self.position = [x,y]
-        print('backward')
+    def close(self):
+        self.target_file.close() 
 
     def jetbot_step(self, cmds, obs_set):
         """ A step function for jetbot simulation 

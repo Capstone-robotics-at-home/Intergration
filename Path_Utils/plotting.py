@@ -1,7 +1,7 @@
 import matplotlib.pyplot as plt
 from Path_Utils import env
 from PIL import ImageDraw
-from math import sin,cos 
+from math import sin, cos
 
 
 class Plotting:
@@ -40,15 +40,15 @@ class Plotting:
         self.plot_grid('Trajectory')
         self.plot_path(ori_path)
 
-        # plot the center and the grabber 
-        Len = 30  # distance from center to grabber 
-        for i in traj:  # [x,y,heading] 
-            x,y,theta = i 
-            center = [x,y] 
-            c_grabber = [x + Len* cos(theta), y + Len * sin(theta)] 
-            x_temp = [center[0],c_grabber[0]]
-            y_temp = [center[1],c_grabber[1]]
-            plt.plot(x_temp,y_temp,'b--') 
+        # plot the center and the grabber
+        Len = 30  # distance from center to grabber
+        for i in traj:  # [x,y,heading]
+            x, y, theta = i
+            center = [x, y]
+            c_grabber = [x + Len * cos(theta), y + Len * sin(theta)]
+            x_temp = [center[0], c_grabber[0]]
+            y_temp = [center[1], c_grabber[1]]
+            plt.plot(x_temp, y_temp, 'b--')
 
         plt.pause(0.1)
 
