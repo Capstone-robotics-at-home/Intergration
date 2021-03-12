@@ -1,4 +1,4 @@
-from math import tan,sin,cos,atan 
+from math import sin,cos,atan 
 
 class Decider():
     '''

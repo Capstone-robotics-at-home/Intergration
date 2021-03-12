@@ -3,34 +3,36 @@ from Astar import Astar
 from Path_Utils import plotting
 
 
-def Astar_search(objects, jetbot):
+def Astar_search(objects, decider):
     """ Searching conducting
     :return: path points """
     obstacle_ls = objects['Obstacle']
-    s_start = jetbot.get_position()
+    s_start = decider.get_position()
     s_goal = objects['Target'][0]
     jetbot_size = objects['Jetbot'][-4:]
     if type(obstacle_ls[0]) == type(()):  # if there is only one obstacle:
         obstacle_ls = [obstacle_ls]
 
-    # astar = Astar(s_start, s_goal, obstacle_ls,jetbot_size)
-    astar = Astar(s_start, s_goal, obstacle_ls)
+    astar = Astar(s_start, s_goal, obstacle_ls,jetbot_size)
+    # astar = Astar(s_start, s_goal, obstacle_ls)
     path_sol, visited = astar.searching()
     return path_sol
 
 
-def get_obs_set(obstacle_list):
+def get_obs_set(obstacle_list, margin_size):
+    # the input style: [[(623, 165), 546, 700, 288, 42]], [834, 1073, 636, 287]
+    margin_x = (margin_size[1] - margin_size[0]) // 2 
+    margin_y = (margin_size[2] - margin_size[3]) // 2 
     if obstacle_list == []:
         raise ValueError('Obstacle list is empty')
-    obs = set()
+    obs = set() 
     for o in obstacle_list:
-        # the 4 parameters of the obstacle 'box'
-        left, right, top, bottom = o[-4:]
-        for x in range(left, right+1):
-            for y in range(bottom, top+1):
-                obs.add((x, y))
+        left, right, top, bottom = o[-4:]  # the 4 parameters of the obstacle 'box'
+        for x in range(left - margin_x, right+1 + margin_x):
+            for y in range(bottom - margin_y, top+1 + margin_y):
+                obs.add((x,y))
 
-    return obs
+    return obs 
 
 
 def realtime_search(objects):
@@ -43,15 +45,15 @@ def realtime_search(objects):
     s_goal = objects['Target'][0]
     if type(obstacle_ls[0]) == type(()):  # if there is only one obstacle:
         obstacle_ls = [obstacle_ls]
-    # astar = Astar(s_start, s_goal, obstacle_ls, jetbot_size)
-    astar = Astar(s_start, s_goal, obstacle_ls)
+    astar = Astar(s_start, s_goal, obstacle_ls, jetbot_size)
+    # astar = Astar(s_start, s_goal, obstacle_ls)
     Original_path, visited = astar.searching()
 
     plot = plotting.Plotting(s_start, s_goal, obstacle_ls)
     plot.animation(Original_path, visited, 'AStar')
 
     path = Original_path
-    obs_set = get_obs_set(obstacle_ls)
+    obs_set = get_obs_set(obstacle_ls,jetbot_size)
 
     while len(path) > decider.Horizon:
         decider.jetbot_step(path, obs_set)
@@ -63,10 +65,6 @@ def realtime_search(objects):
 
 
 if __name__ == '__main__':
-    # objects = {'Jetbot': [(953, 461), 800, 1000, 600, 200],
-    #            'Obstacle': [(1100, 300), 1000, 1200, 800, 200],
-    #            'Target': [(1342, 270), 1308, 1377, 249, 92],
-    #            'Grabber': [(1054, 626), 1003, 1106, 728, 525]}
 
     objects = {'Jetbot': [(210, 462), 107, 314, 577, 347],
                'Obstacle': [(758, 292), 693, 823, 388, 180],
