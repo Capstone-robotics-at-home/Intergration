@@ -53,7 +53,7 @@ while(True):
         path, visited = astar.searching()
 
         plot = plotting.Plotting(s_start, s_goal, obstacle_ls)
-        frame = plot.plot_image_path(frame,path)
+        frame = plot.plot_image_path(frame,path,decider.Horizon)
 
     frame = np.array(frame)
 

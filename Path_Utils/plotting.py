@@ -93,13 +93,14 @@ class Plotting:
 
         plt.pause(0.1)
 
-    def plot_image_path(self, img, path):
+    def plot_image_path(self, img, path, N_horizon = 0):
         ''' draw the path on the image 
         return: painted image '''
         start = path[-1]
         end = path[0]
         draw = ImageDraw.Draw(img)
         draw.line(path, fill=(255, 0, 0), width=20)
+        draw.line(path[-N_horizon:], fill = (0,0,255), width = 15)
         del draw
 
         return img

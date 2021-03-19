@@ -11,9 +11,9 @@ class Decider():
         self.position = (0, 0)
         self.heading = 0
         self.visited = []
-        self.Horizon = 3  # A tuning parameter
+        self.Horizon = 10  # A tuning parameter
         self.Angle = pi / 12  # Turning angle at each step
-        self.StepLen = 30  # Step Length, should be shorter than Horizon
+        self.StepLen = 50  # Step Length, should be shorter than Horizon
         self.if_write = if_write  # if you want to write the command to target dir
         self.target_path = '../Capstone_Simulation/gym_rev/cmd.txt'  # path of cmd.txt
 
@@ -25,13 +25,13 @@ class Decider():
         self.heading -= self.Angle
         self.visited.append(self.position + [self.heading])
         if self.if_write:
-            self.communicator('right')
+            self.communicator('left')
 
     def left(self):
         self.heading += self.Angle
         self.visited.append(self.position + [self.heading])
         if self.if_write:
-            self.communicator('left')
+            self.communicator('right')
 
     def forward(self):
         x, y = self.position
@@ -43,7 +43,8 @@ class Decider():
             self.communicator('forward')
 
     def communicator(self, cmd):
-        ''' A tool to transmit cmd line to jetbot '''
+        ''' A tool to transmit cmd line to jetbot
+        warning: the counting is the mirror of the real world pic -> left right inverse '''
         cmd_file = open(self.target_path, 'w')
         cmd_file.write(cmd)
         cmd_file.close()
@@ -137,7 +138,7 @@ class Decider():
             return False
         if not len(objs['Jetbot'][0]) == 2:
             return False
-        if not len(objs['Obstacle'][0]) == 2:
+        if not len(objs['Target'][0]) == 2:
             return False
         if not len(objs['Grabber'][0]) == 2:
             return False
@@ -145,6 +146,9 @@ class Decider():
 
 
 if __name__ == '__main__':
-    PI = 3.1415
-    print(PI/12 * 180 / PI)
-    print(-29.418124371804982 * PI / 180)
+    decider = Decider()
+    objects = {'Jetbot': [(475, 454), 370, 581, 602, 307], 
+    'Obstacle': [(971, 447), 904, 1039, 565, 329], 
+    'Target': [[(1335, 454), 1289, 1381, 537, 371], [(711, 1038), 688, 735, 1078, 999]], 
+    'Grabber': [(585, 591), 540, 631, 667, 515]}
+    print(decider.obj_isvalid(objects))

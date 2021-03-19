@@ -22,7 +22,7 @@ yolo = YOLO()
 # capture=cv2.VideoCapture("YOLOv3/img/b.mp4") 
 # capture=cv2.VideoCapture(1) 
 
-decider = Decider()
+decider = Decider(True)
 fps = 0.0
 PathEnable = True
 while(True):
@@ -55,7 +55,7 @@ while(True):
         path, visited = astar.searching()
 
         plot = plotting.Plotting(s_start, s_goal, obstacle_ls)
-        frame = plot.plot_image_path(frame,path)
+        frame = plot.plot_image_path(frame,path,decider.Horizon)
 
         ## let the Mojoco_jetbot move 
 
@@ -72,8 +72,11 @@ while(True):
     frame = cv2.cvtColor(frame,cv2.COLOR_RGB2BGR)
 
     fps  = ( fps + (1./(time.time()-t1)) ) / 2
-    print("fps= %.2f"%(fps), end = ' ')
-    # frame = cv2.putText(frame, "fps= %.2f"%(fps), (0, 40), cv2.FONT_HERSHEY_SIMPLEX, 1, (0, 255, 0), 2)
+    frame = cv2.putText(frame, "fps= %.2f"%(fps), (10, 40), cv2.FONT_HERSHEY_SIMPLEX, 1, (0, 255, 0), 2)
+    cmd_txt = open(decider.target_path,'r')
+    cmd = cmd_txt.read(10)
+    frame = cv2.putText(frame, cmd, (10, 140), cv2.FONT_HERSHEY_SIMPLEX, 1, (0, 255, 0), 2)
+    print("fps= %.2f"%(fps),' || command is: ', cmd)
 
     cv2.imshow("video",frame)
 

@@ -8,7 +8,7 @@ from Path_Utils import plotting, env
 
 yolo = YOLO()
 
-img = 'img/2.jpg'
+img = 'YOLOv3/img/2.jpg'
 try:
     image = Image.open(img)
 except:
@@ -26,7 +26,5 @@ astar = Astar(s_start, s_goal, obstacle_ls)
 path, visited = astar.searching()
 
 plot = plotting.Plotting(s_start, s_goal, obstacle_ls)
-img = plot.plot_image_path(r_image,path)
-img.show() 
-
-
+img = plot.plot_image_path(r_image, path, 10)
+img.show()
