@@ -1,5 +1,5 @@
 #-------------------------------------#
-#       调用摄像头检测
+# Use screen recoder to monitor Mujoco 
 #-------------------------------------#
 import os,sys 
 sys.path.append(os.path.dirname(os.path.abspath(__file__)) +
@@ -12,31 +12,33 @@ import time
 from Astar import Astar
 from Path_Utils import plotting, env
 from Testing import get_obs_set, Astar_search
-from JetbotPy import Decider 
+from JetbotPy import Decider
+from screen_recorder import window_capture 
+
 
 yolo = YOLO()
 # get the camera 
 # capture=cv2.VideoCapture("1.mp4" Or 0)
-capture=cv2.VideoCapture("YOLOv3/img/b.mp4") 
+# capture=cv2.VideoCapture("YOLOv3/img/b.mp4") 
 # capture=cv2.VideoCapture(1) 
 
-decider = Decider() 
+decider = Decider()
 fps = 0.0
 PathEnable = True
 while(True):
     t1 = time.time()
     # get one frame
-    ref,frame=capture.read()
-    # change format，BGRtoRGB
+    frame = window_capture()  
+    # # change format，BGRtoRGB
     frame = cv2.cvtColor(frame,cv2.COLOR_BGR2RGB)
-    # change to Image
+    # # change to Image
     frame = Image.fromarray(np.uint8(frame))
 
     # start detecting 
     frame, objects = yolo.detect_image(frame)
 
-    if not decider.obj_isvalid(objects):  # if all the objects are not detected -> recheck 
-        print('\r','Detection invalid.', end = ' ')
+    if not decider.obj_isvalid(objects):  # if the detected objects are not valid -> recheck 
+        print('\r','Detection invalid', end = ' ')
         PathEnable = False
     else: 
         PathEnable = True 
@@ -55,9 +57,18 @@ while(True):
         plot = plotting.Plotting(s_start, s_goal, obstacle_ls)
         frame = plot.plot_image_path(frame,path)
 
+        ## let the Mojoco_jetbot move 
+
+        decider.reinit(s_start, s_goal)
+        obs_set = get_obs_set(obstacle_ls,jetbot_size)
+
+        if len(path) > decider.Horizon:
+            decider.jetbot_step(path,obs_set)
+            
+
     frame = np.array(frame)
 
-    # RGBtoBGR to satisfy opencv display format 
+    # # RGBtoBGR to satisfy opencv display format 
     frame = cv2.cvtColor(frame,cv2.COLOR_RGB2BGR)
 
     fps  = ( fps + (1./(time.time()-t1)) ) / 2
