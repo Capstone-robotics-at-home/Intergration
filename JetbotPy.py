@@ -16,6 +16,7 @@ class Decider():
         self.StepLen = 50  # Step Length, should be shorter than Horizon
         self.if_write = if_write  # if you want to write the command to target dir
         self.target_path = '../Capstone_Simulation/gym_rev/cmd.txt'  # path of cmd.txt
+        self.cmd = '0'
 
     def reinit(self, position, grabber_p):
         self.position = list(position)
@@ -24,14 +25,16 @@ class Decider():
     def right(self):
         self.heading -= self.Angle
         self.visited.append(self.position + [self.heading])
+        self.cmd = 'left'
         if self.if_write:
-            self.communicator('left')
+            self.send_cmd()
 
     def left(self):
         self.heading += self.Angle
         self.visited.append(self.position + [self.heading])
+        self.cmd = 'right'
         if self.if_write:
-            self.communicator('right')
+            self.send_cmd() 
 
     def forward(self):
         x, y = self.position
@@ -39,25 +42,28 @@ class Decider():
         y += int(self.StepLen * sin(self.heading))
         self.position = [x, y]
         self.visited.append([x, y, self.heading])
+        self.cmd = 'forward'
         if self.if_write: 
-            self.communicator('forward')
+            self.send_cmd()
 
-    def communicator(self, cmd):
+    def send_cmd(self):
         ''' A tool to transmit cmd line to jetbot
         warning: the counting is the mirror of the real world pic -> left right inverse '''
         cmd_file = open(self.target_path, 'w')
-        cmd_file.write(cmd)
+        cmd_file.write(self.cmd)
         cmd_file.close()
 
-    def jetbot_step(self, cmds, obs_set):
+    def jetbot_step(self, path, obs_set):
         """ A step function for jetbot simulation 
         First turn to the desired direction 
         Then move forward in that direction 
         :cmd: the list of path solved by Astar 
         :obs_ls: the list of obstacles """
-        target_point = cmds[-self.Horizon]
+        target_point = path[-self.Horizon]
         target_heading = self.checkHeading(target_point, self.position)
         while abs(self.heading - target_heading) > 0.27:
+            print('Position: {} || Target point: {} ||'.format(self.position,target_point),
+                'Heading: %.2f || Target Heading: %.2f' %(self.heading*180/pi, target_heading*180/pi))
             # turn until it reaches a desired angle,
             # the angle should be slightly larger than self.Angle
             if target_heading > self.heading:
@@ -70,30 +76,25 @@ class Decider():
         # check if one step further will collide to choose the right side
         while not self.can_step(obs_set):
             print('=======Searching heading======')
-            Wait_time = 0
             if target_heading > self.heading:
                 if i % 2 == 1:
                     for _ in range(i):
                         self.left()
-                        time.sleep(Wait_time)
                 if i % 2 == 0:
                     for _ in range(i):
                         self.right()
-                        time.sleep(Wait_time)
             else:
                 if i % 2 == 1:
                     for _ in range(i):
                         self.right()
-                        time.sleep(Wait_time)
                 if i % 2 == 0:
                     for _ in range(i):
                         self.left()
-                        time.sleep(Wait_time)
             i += 1
         self.forward()
-        print('Position: ', self.position,
-              'Heading: ', self.heading * 360/(2*3.14),
-              'Target Point: ', target_point)
+        print('Position: {} || Target point: {} ||'.format(self.position,target_point),
+            'Heading: %.2f || Target Heading: %.2f' %(self.heading*180/pi, target_heading*180/pi))
+
 
     def get_trajectory(self):
         return self.visited

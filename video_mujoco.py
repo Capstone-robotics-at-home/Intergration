@@ -39,12 +39,15 @@ while(True):
 
     if not decider.obj_isvalid(objects):  # if the detected objects are not valid -> recheck 
         print('\r','Detection invalid', end = ' ')
+        # decider.cmd = 'forward' if decider.cmd == 'forward' else '0' 
+        decider.cmd = '0'
+        decider.send_cmd()
         PathEnable = False
     else: 
         PathEnable = True 
 
     # Use Astar
-    if PathEnable: 
+    if PathEnable:  
         s_start = objects['Jetbot'][0]
         s_goal = objects['Target'][0]
         obstacle_ls = objects['Obstacle']
@@ -59,7 +62,7 @@ while(True):
 
         ## let the Mojoco_jetbot move 
 
-        decider.reinit(s_start, s_goal)
+        decider.reinit(objects['Jetbot'][0], objects['Grabber'][0])
         obs_set = get_obs_set(obstacle_ls,jetbot_size)
 
         if len(path) > decider.Horizon:
@@ -73,8 +76,7 @@ while(True):
 
     fps  = ( fps + (1./(time.time()-t1)) ) / 2
     frame = cv2.putText(frame, "fps= %.2f"%(fps), (10, 40), cv2.FONT_HERSHEY_SIMPLEX, 1, (0, 255, 0), 2)
-    cmd_txt = open(decider.target_path,'r')
-    cmd = cmd_txt.read(10)
+    cmd = decider.cmd
     frame = cv2.putText(frame, cmd, (10, 140), cv2.FONT_HERSHEY_SIMPLEX, 1, (0, 255, 0), 2)
     print("fps= %.2f"%(fps),' || command is: ', cmd)
 
