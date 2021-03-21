@@ -25,6 +25,8 @@ yolo = YOLO()
 decider = Decider(True)
 fps = 0.0
 PathEnable = True
+Ratio = 1.2  # The extended boundary param
+
 while(True):
     t1 = time.time()
     # get one frame
@@ -39,7 +41,6 @@ while(True):
 
     if not decider.obj_isvalid(objects):  # if the detected objects are not valid -> recheck 
         print('\r','Detection invalid', end = ' ')
-        # decider.cmd = 'forward' if decider.cmd == 'forward' else '0' 
         decider.cmd = '0'
         decider.send_cmd()
         PathEnable = False
@@ -54,8 +55,19 @@ while(True):
         if type(obstacle_ls[0]) == type(()):  # if there is only one obstacle:
             obstacle_ls = [obstacle_ls]
         jetbot_size = objects['Jetbot'][-4:]
-        astar = Astar(s_start, s_goal, obstacle_ls,jetbot_size)
-        path, visited = astar.searching()
+
+
+        # astar = Astar(s_start, s_goal, obstacle_ls,jetbot_size)
+        # path, visited = astar.searching()
+        Path_Found = False
+        while not Path_Found:  # Error might take place when scale changes 
+            try:
+                astar = Astar(s_start, s_goal, obstacle_ls, jetbot_size, Ratio)
+                path, visited = astar.searching()
+                Path_Found = True
+            except UnboundLocalError:
+                Ratio -= 0.5
+                print('Error, try change the size, ratio = ', Ratio)
 
         plot = plotting.Plotting(s_start, s_goal, obstacle_ls)
         frame = plot.plot_image_path(frame,path,decider.Horizon)

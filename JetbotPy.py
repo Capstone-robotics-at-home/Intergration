@@ -1,5 +1,10 @@
+""" 
+Author: ZionDeng 
+The decider class is used for decision making for Jetbot based on current position and env
+Decisions: left, right, forward 
+"""
+
 from math import sin, cos, atan, pi
-import time
 
 
 class Decider():
@@ -11,11 +16,11 @@ class Decider():
         self.position = (0, 0)
         self.heading = 0
         self.visited = []
-        self.Horizon = 10  # A tuning parameter
+        self.Horizon = 5  # A tuning parameter
         self.Angle = pi / 12  # Turning angle at each step
         self.StepLen = 50  # Step Length, should be shorter than Horizon
         self.if_write = if_write  # if you want to write the command to target dir
-        self.target_path = '../Capstone_Simulation/gym_rev/cmd.txt'  # path of cmd.txt
+        self.Target_path = '../Capstone_Simulation/gym_rev/cmd.txt'  # path of cmd.txt
         self.cmd = '0'
 
     def reinit(self, position, grabber_p):
@@ -49,7 +54,7 @@ class Decider():
     def send_cmd(self):
         ''' A tool to transmit cmd line to jetbot
         warning: the counting is the mirror of the real world pic -> left right inverse '''
-        cmd_file = open(self.target_path, 'w')
+        cmd_file = open(self.Target_path, 'w')
         cmd_file.write(self.cmd)
         cmd_file.close()
 
@@ -72,25 +77,7 @@ class Decider():
             else:
                 self.right()
                 return
-        i = 1
-        # check if one step further will collide to choose the right side
-        while not self.can_step(obs_set):
-            print('=======Searching heading======')
-            if target_heading > self.heading:
-                if i % 2 == 1:
-                    for _ in range(i):
-                        self.left()
-                if i % 2 == 0:
-                    for _ in range(i):
-                        self.right()
-            else:
-                if i % 2 == 1:
-                    for _ in range(i):
-                        self.right()
-                if i % 2 == 0:
-                    for _ in range(i):
-                        self.left()
-            i += 1
+
         self.forward()
         print('Position: {} || Target point: {} ||'.format(self.position,target_point),
             'Heading: %.2f || Target Heading: %.2f' %(self.heading*180/pi, target_heading*180/pi))

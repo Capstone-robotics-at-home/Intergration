@@ -7,15 +7,15 @@ class Astar:
     '''Astar set the cost + heuristics as the priority 
     '''
 
-    def __init__(self, s_start, s_goal, obs, bot_size = [0,0,0,0], heuristic_type='manhattan'):
+    def __init__(self, s_start, s_goal, obs, bot_size=[0, 0, 0, 0], ratio=1, heuristic_type='manhattan'):
         self.s_start = s_start
         self.s_goal = s_goal
         self.heuristic_type = heuristic_type
-        self.Env = env.Env(obs, bot_size)  # class env
+        self.Env = env.Env(obs, bot_size, ratio)  # class env
         self.u_set = self.Env.motions
         self.obs = self.Env.obs
 
-        self.Dstop = 30  # the terminal distance
+        self.Dstop = 100  # the terminal distance
 
         self.OPEN = []  # priority queque / OPENset
         self.ClOSED = []  # visited points

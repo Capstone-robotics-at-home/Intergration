@@ -3,6 +3,7 @@ from Astar import Astar
 from Path_Utils import plotting
 
 
+
 def Astar_search(objects, decider):
     """ Searching conducting
     :return: path points """
@@ -13,9 +14,16 @@ def Astar_search(objects, decider):
     if type(obstacle_ls[0]) == type(()):  # if there is only one obstacle:
         obstacle_ls = [obstacle_ls]
 
-    astar = Astar(s_start, s_goal, obstacle_ls, jetbot_size)
-    # astar = Astar(s_start, s_goal, obstacle_ls)
-    path_sol, visited = astar.searching()
+    Ratio = 1
+    Path_Found = False
+    while not Path_Found:  # Error might take place when scale changes 
+        try:
+            astar = Astar(s_start, s_goal, obstacle_ls, jetbot_size, Ratio)
+            path_sol, visited = astar.searching()
+            Path_Found = True
+        except UnboundLocalError:
+            Ratio -= 0.05
+            print('Error, try change the size, ratio = ', Ratio)
     return path_sol
 
 
@@ -48,8 +56,17 @@ def realtime_search(objects):
     s_goal = objects['Target'][0]
     if type(obstacle_ls[0]) == type(()):  # if there is only one obstacle:
         obstacle_ls = [obstacle_ls]
-    astar = Astar(s_start, s_goal, obstacle_ls, jetbot_size)
-    Original_path, visited = astar.searching()
+
+    Ratio = 1
+    Path_Found = False
+    while not Path_Found:  # Error might take place when scale changes 
+        try:
+            astar = Astar(s_start, s_goal, obstacle_ls, jetbot_size, Ratio)
+            Original_path, visited = astar.searching()
+            Path_Found = True
+        except UnboundLocalError:
+            Ratio -= 0.05
+            print('Error, try change the size, ratio = ', Ratio)
 
     plot = plotting.Plotting(s_start, s_goal, obstacle_ls)
     plot.animation(Original_path, visited, 'AStar')
@@ -75,6 +92,6 @@ if __name__ == '__main__':
                'Obstacle': [(758, 292), 693, 823, 388, 180],
                'Target': [(1070, 199), 1036, 1105, 256, 143],
                'Grabber': [(174, 591), 141, 207, 660, 523]}
-    objects ={ 
-'Jetbot': [(829, 278), 695, 964, 485, 71], 'Obstacle': [(972, 588), 898, 1047, 718, 458], 'Target': [(1559, 727), 1517, 1602, 819, 636], 'Grabber': [(962, 377), 920, 1004, 447, 308]}
+    # objects = {
+    #     'Jetbot': [(829, 278), 695, 964, 485, 71], 'Obstacle': [(972, 588), 898, 1047, 718, 458], 'Target': [(1559, 727), 1517, 1602, 819, 636], 'Grabber': [(962, 377), 920, 1004, 447, 308]}
     realtime_search(objects)
