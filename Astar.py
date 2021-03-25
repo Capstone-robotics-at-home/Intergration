@@ -15,7 +15,7 @@ class Astar:
         self.u_set = self.Env.motions
         self.obs = self.Env.obs
 
-        self.Dstop = 100  # the terminal distance
+        self.Dstop = 30  # the terminal distance
 
         self.OPEN = []  # priority queque / OPENset
         self.ClOSED = []  # visited points

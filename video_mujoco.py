@@ -25,7 +25,7 @@ yolo = YOLO()
 decider = Decider(True)
 fps = 0.0
 PathEnable = True
-Ratio = 1.2  # The extended boundary param
+Ratio = 1.5  # The extended boundary param
 
 while(True):
     t1 = time.time()
@@ -66,7 +66,7 @@ while(True):
                 path, visited = astar.searching()
                 Path_Found = True
             except UnboundLocalError:
-                Ratio -= 0.5
+                Ratio -= 0.3
                 print('Error, try change the size, ratio = ', Ratio)
 
         plot = plotting.Plotting(s_start, s_goal, obstacle_ls)

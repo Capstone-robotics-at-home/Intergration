@@ -22,7 +22,7 @@ def Astar_search(objects, decider):
             path_sol, visited = astar.searching()
             Path_Found = True
         except UnboundLocalError:
-            Ratio -= 0.05
+            Ratio -= 0.1
             print('Error, try change the size, ratio = ', Ratio)
     return path_sol
 
@@ -65,7 +65,7 @@ def realtime_search(objects):
             Original_path, visited = astar.searching()
             Path_Found = True
         except UnboundLocalError:
-            Ratio -= 0.05
+            Ratio -= 0.1
             print('Error, try change the size, ratio = ', Ratio)
 
     plot = plotting.Plotting(s_start, s_goal, obstacle_ls)

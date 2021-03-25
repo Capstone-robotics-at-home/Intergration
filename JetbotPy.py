@@ -16,9 +16,9 @@ class Decider():
         self.position = (0, 0)
         self.heading = 0
         self.visited = []
-        self.Horizon = 5  # A tuning parameter
+        self.Horizon = 10  # A tuning parameter
         self.Angle = pi / 12  # Turning angle at each step
-        self.StepLen = 50  # Step Length, should be shorter than Horizon
+        self.StepLen = 20  # Step Length, should be shorter than Horizon
         self.if_write = if_write  # if you want to write the command to target dir
         self.Target_path = '../Capstone_Simulation/gym_rev/cmd.txt'  # path of cmd.txt
         self.cmd = '0'

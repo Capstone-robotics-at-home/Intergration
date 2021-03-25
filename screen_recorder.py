@@ -4,7 +4,7 @@ import win32con
 import win32api
 import numpy as np 
 import cv2 
-
+from PIL import Image 
 
 def window_capture():
     hwnd = 0  # 窗口的编号，0号表示当前活跃窗口
@@ -33,12 +33,17 @@ def window_capture():
     signedIntsArray = saveBitMap.GetBitmapBits(True)
     img = np.frombuffer(signedIntsArray, dtype='uint8')
     img.shape = (h,w,4)
-    return img 
+    img_pil = Image.fromarray(img).convert('RGB')
+    x, y = img_pil.size
+    img_pil.thumbnail((x//2,y//2))
+    
+    return np.array(img_pil)
 
 
 if __name__ == '__main__':
     
-    while True:
+    # while True:
+    for i in range(1):
         frame = window_capture()
         # frame = cv2.cvtColor(frame,cv2.COLOR_RGB2BGR)
         cv2.imshow('video', frame)
