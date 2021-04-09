@@ -4,7 +4,7 @@
 import os,sys 
 sys.path.append(os.path.dirname(os.path.abspath(__file__)) +
                 "/YOLOv3")
-from yolo import YOLO
+from YOLOv3.yolo import YOLO
 from PIL import Image
 import numpy as np
 import cv2
@@ -30,7 +30,8 @@ Ratio = 1.5  # The extended boundary param
 while(True):
     t1 = time.time()
     # get one frame
-    frame = window_capture()  
+    frame = window_capture() 
+    # ref,frame=capture.read()  # if you are using camera to get frame, use this line and also uncomment the line above with respect to capture.
     # # change format，BGRtoRGB
     frame = cv2.cvtColor(frame,cv2.COLOR_BGR2RGB)
     # # change to Image
@@ -97,5 +98,5 @@ while(True):
 
     c= cv2.waitKey(30) & 0xff 
     if c==27:
-        capture.release()
+        # capture.release()
         break

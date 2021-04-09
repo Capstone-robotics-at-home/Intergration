@@ -2,6 +2,7 @@
 Author: ZionDeng 
 The decider class is used for decision making for Jetbot based on current position and env
 Decisions: left, right, forward 
+TODO: Change the Decider.send_cmd() if it is tested in the real environment with socket method.
 """
 
 from math import sin, cos, atan, pi
@@ -22,6 +23,7 @@ class Decider():
         self.if_write = if_write  # if you want to write the command to target dir
         self.Target_path = '../Capstone_Simulation/gym_rev/cmd.txt'  # path of cmd.txt
         self.cmd = '0'
+        self.cmd_record = [] # record the command history
 
     def reinit(self, position, grabber_p):
         self.position = list(position)
@@ -30,14 +32,16 @@ class Decider():
     def right(self):
         self.heading -= self.Angle
         self.visited.append(self.position + [self.heading])
-        self.cmd = 'left'
+        self.cmd = 'left'  # should be left not right 
+        self.cmd_record.append(2)
         if self.if_write:
             self.send_cmd()
 
     def left(self):
         self.heading += self.Angle
         self.visited.append(self.position + [self.heading])
-        self.cmd = 'right'
+        self.cmd = 'right'  # should be right not left 
+        self.cmd_record.append(1)
         if self.if_write:
             self.send_cmd() 
 
@@ -48,6 +52,7 @@ class Decider():
         self.position = [x, y]
         self.visited.append([x, y, self.heading])
         self.cmd = 'forward'
+        self.cmd_record.append(0)
         if self.if_write: 
             self.send_cmd()
 

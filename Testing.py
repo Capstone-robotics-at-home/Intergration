@@ -1,9 +1,18 @@
+'''
+ # @ Author: Zion Deng
+ # @ Create Time: 2021-02-16 11:35:53
+ # @ Description: 
+ * Use Astar to calculate the path to the target 
+ * Use Decider to calculate the motion at each point 
+ * Print and draw some necessary results
+ '''
+
 from JetbotPy import Decider
 from Astar import Astar
 from Path_Utils import plotting
 
 
-
+Ratio = 1 
 def Astar_search(objects, decider):
     """ Searching conducting
     :return: path points """
@@ -14,7 +23,7 @@ def Astar_search(objects, decider):
     if type(obstacle_ls[0]) == type(()):  # if there is only one obstacle:
         obstacle_ls = [obstacle_ls]
 
-    Ratio = 1
+    global Ratio 
     Path_Found = False
     while not Path_Found:  # Error might take place when scale changes 
         try:
@@ -57,7 +66,7 @@ def realtime_search(objects):
     if type(obstacle_ls[0]) == type(()):  # if there is only one obstacle:
         obstacle_ls = [obstacle_ls]
 
-    Ratio = 1
+    global Ratio 
     Path_Found = False
     while not Path_Found:  # Error might take place when scale changes 
         try:
@@ -84,6 +93,7 @@ def realtime_search(objects):
     trajectory = decider.get_trajectory()
     print('Terminate, Total number of movements is: %d' % len(trajectory))
     plot.plot_traj(Original_path, trajectory)
+    return decider.cmd_record
 
 
 if __name__ == '__main__':
