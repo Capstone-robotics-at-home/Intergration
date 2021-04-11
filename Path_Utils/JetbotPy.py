@@ -13,7 +13,7 @@ class Decider():
     '''
 
     def __init__(self, if_write=False):
-        self.position = (0, 0)
+        self.position = [0,0]
         self.heading = 0
         self.visited = []
         self.Horizon = 10  # A tuning parameter
@@ -29,7 +29,7 @@ class Decider():
         self.heading = self.checkHeading(grabber_p, position)
 
     def right(self):
-        self.heading -= self.Angle
+        self.heading -= self.Angle if self.heading > -pi else (self.Angle - pi)
         self.visited.append(self.position + [self.heading])
         self.cmd = 'left'  # should be left not right 
         self.cmd_record.append(2)
@@ -37,7 +37,7 @@ class Decider():
             self.send_cmd()
 
     def left(self):
-        self.heading += self.Angle
+        self.heading += self.Angle if self.heading < pi else (self.Angle - pi) 
         self.visited.append(self.position + [self.heading])
         self.cmd = 'right'  # should be right not left 
         self.cmd_record.append(1)

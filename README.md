@@ -23,3 +23,13 @@
 * The position of the jetbot can be calculated 
 * The trajectory of the jetbot including position and heading can be printed and plotted 
 
+# Reinforcement Learning added 
+## Before running RL: 
+* refer to path planning repo to learn how to train and save the neural network model 
+* train the neural network and replace it with DQNnet.pkl
+
+## Run video_RL.py file 
+* It seems that it cannot be tested in Mujoco since Mujoco is too inaccurate 
+* Hopefully it can be tested well in real environment 
+* Good luck.
+
