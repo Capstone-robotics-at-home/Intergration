@@ -20,7 +20,7 @@ class Decider():
         self.Angle = pi / 12  # Turning angle at each step
         self.StepLen = 20  # Step Length, should be shorter than Horizon
         self.if_write = if_write  # if you want to write the command to target dir
-        self.Target_path = '../Capstone_Simulation/gym_rev/cmd.txt'  # path of cmd.txt
+        self.Target_path = '../Capstone_Simulation/cmd.txt'  # path of cmd.txt
         self.cmd = '0'
         self.cmd_record = [] # record the command history
 
