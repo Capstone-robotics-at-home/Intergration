@@ -1,5 +1,5 @@
 #-------------------------------------#
-#       调用摄像头检测
+#    YOLO + Astar shown in video
 #-------------------------------------#
 import os,sys 
 sys.path.append(os.path.dirname(os.path.abspath(__file__)) +

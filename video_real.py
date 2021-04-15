@@ -4,6 +4,8 @@
 import os,sys 
 sys.path.append(os.path.dirname(os.path.abspath(__file__)) +
                 "/YOLOv3")
+sys.path.append(os.path.dirname(os.path.abspath(__file__)) +
+                "/Path_Utils")
 from YOLOv3.yolo import YOLO
 from PIL import Image
 import numpy as np
@@ -13,12 +15,10 @@ from Astar import Astar
 from Path_Utils import plotting, env
 from Testing import get_obs_set, Astar_search
 from JetbotPy import Decider
-from screen_recorder import window_capture 
+from frame_capturer import window_capture 
 
 
 yolo = YOLO()
-# get the camera 
-# capture=cv2.VideoCapture("1.mp4" Or 0)
 # capture=cv2.VideoCapture("YOLOv3/img/b.mp4") 
 # capture=cv2.VideoCapture(1) 
 
@@ -30,8 +30,12 @@ Ratio = 1.5  # The extended boundary param
 while(True):
     t1 = time.time()
     # get one frame
-    frame = window_capture() 
-    # ref,frame=capture.read()  # if you are using camera to get frame, use this line and also uncomment the line above with respect to capture.
+    try:
+        frame = cv2.imread('pic.jpg',1)  # if you want to read image from 2D simulation, use this 
+        # frame = window_capture() # if you want to use screen capture to get frame, use this
+        # ref,frame=capture.read()  # if you are using camera to get frame, use this line and also uncomment the line above with respect to capture.
+    except:
+        continue
     # # change format，BGRtoRGB
     frame = cv2.cvtColor(frame,cv2.COLOR_BGR2RGB)
     # # change to Image

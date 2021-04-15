@@ -40,6 +40,7 @@ def window_capture():
     return np.array(img_pil)
 
 
+
 if __name__ == '__main__':
     
     # while True:
@@ -49,7 +50,7 @@ if __name__ == '__main__':
         cv2.imshow('video', frame)
         c= cv2.waitKey(30) & 0xff 
         if c==27:
-            capture.release()
+            # capture.release()
             break
 
 
