@@ -4,10 +4,10 @@
   * Path planning 
   * YOLO-V3 (video_yolo.py is a demo for YOLO)
   * Simulation
-* Some modifications are needed 
-  * YOLO model should be put into it 
+* Some modifications are needed according to different environment
+  * YOLO model should be put into it. Model for different applications have uploaded to our Google drive.(Mujoco, matplotlib, real_world)
   * The target directory (Mujoco or Jetbot) should be changed 
-  * Some constant like turnning angle should be changed according to physical measurement 
+  * Some constant (like turnning angle, Astar ratio) might need to be be changed according to physical measurement 
 
 # Run the video_real.py file
 * It can get picture from jpg/png or window_capture or camera. 
@@ -16,7 +16,7 @@
   * If you want to test with camera, use the third line.
   * All these 3 method are included in the file. Check them.
 * Then YOLO is used for object detection 
-* The detected results are used for path planning with algorithms(A* now RL in the future(maybe)) 
+* The detected results are used for path planning with algorithms
 * The decider will use the result from Path planning and YOLO to send out the command to Jetbot.
 
 # Reinforcement Learning added 
@@ -25,7 +25,7 @@
 * train the neural network and replace it with DQNnet.pkl
 
 ## Run video_RL.py file 
-* It is not working so well now.
+* Before running this, make sure that your DQNnet.pkl is trained for your own environment
 * Hopefully it can be tested well in real environment 
 * Good luck.
 

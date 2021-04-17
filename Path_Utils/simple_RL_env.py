@@ -5,7 +5,7 @@
  '''
 
 from Path_Utils.JetbotPy import Decider
-from Path_Utils.Astar import Astar
+from Astar import Astar
 from Path_Utils import plotting
 
 

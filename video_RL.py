@@ -2,15 +2,17 @@
  # @ Author: Zion Deng
  # @ Description: Real time integration with YOLO, Reinforcement Learning
  '''
+import os,sys 
+sys.path.append(os.path.dirname(os.path.abspath(__file__)) +
+                "/YOLOv3")
+sys.path.append(os.path.dirname(os.path.abspath(__file__)) +
+                "/Path_Utils")
 
 from matplotlib import pyplot as plt
 from RLmodel_test import DQNnet
 from Path_Utils.simple_RL_env import CartEnv
 from Path_Utils.simple_RL_run import Net
 
-import os,sys 
-sys.path.append(os.path.dirname(os.path.abspath(__file__)) +
-                "/YOLOv3")
 from YOLOv3.yolo import YOLO
 from PIL import Image
 import numpy as np
@@ -20,7 +22,7 @@ from Astar import Astar
 from Path_Utils import plotting, env
 from Testing import get_obs_set, Astar_search
 from JetbotPy import Decider
-from screen_recorder import window_capture 
+from frame_capturer import window_capture 
 
 def change_cmd2str(cmd):
     '''
@@ -69,9 +71,9 @@ def RL_search(objects):
 
             ep_r += r 
             if done: 
-                print('Episode information number: ', info)
+                print('\rEpisode information number: ', info,end ='')
                 if info == 1:
-                    print('================================ Path Found =================================')
+                    print('\n================================ Path Found =================================')
                     trajectory = env.decider.get_trajectory()
                     trajectory_ls = [(visit[0],visit[1]) for visit in trajectory]
                     return env.decider.cmd_record[0], trajectory_ls[::-1]
@@ -151,18 +153,3 @@ if __name__ == '__main__':
         if c==27:
             # capture.release()
             break
-
-
-
-
-    # if __name__ == '__main__':
-    #     objects = {'Jetbot': [(161, 146), 109, 213, 222, 70], 
-    #                 'Obstacle': [(508, 223), 465, 551, 293, 153], 
-    #                 # 'Obstacle': [(0,0), 0,1,0,1],
-    #                 'Target': [(780, 364), 756, 804, 412, 316], 
-    #                 'Grabber': [(214, 191), 186, 242, 232, 150]}
-    #     # objects = {
-    #     #     'Jetbot': [(829, 278), 695, 964, 485, 71], 'Obstacle': [(972, 588), 898, 1047, 718, 458], 'Target': [(1559, 727), 1517, 1602, 819, 636], 'Grabber': [(962, 377), 920, 1004, 447, 308]}
-    #     # realtime_search(objects)
-    #     sol = RL_search(objects)
-    #     print(sol)
