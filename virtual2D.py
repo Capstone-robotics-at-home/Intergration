@@ -79,6 +79,9 @@ def canvas_init():
     # obstacles 
     obstacle = mpatches.Rectangle(obs_center, 0.4,0.2, color = 'y')
     ax.add_patch(obstacle)
+    obs_center2 = np.array([0.2, 0.8])
+    obstacle2 = mpatches.Rectangle(obs_center2, 0.4,0.2, color = 'y')
+    ax.add_patch(obstacle2)
     # target
     target = mpatches.RegularPolygon(target_center,3,0.1, color = 'r')
     ax.add_patch(target)
@@ -105,7 +108,7 @@ def simulation2D():
         cmd_txt.close()
         jetbot.act(cmd)
         plt.pause(DT)
-        plt.savefig('pic.jpg')
+        # plt.savefig('pic.jpg')
         i += 1
 
 if __name__ == '__main__':

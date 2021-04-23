@@ -19,7 +19,7 @@ class YOLO(object):
     _defaults = {
         # "model_path": 'model_data/yolo_weights.pth',
         # "classes_path": 'model_data/coco_classes.txt',
-        "model_path": 'YOLOv3/model_data/plt_weights.pth',
+        "model_path": 'YOLOv3/model_data/real_weights.pth',
         "classes_path": 'YOLOv3/model_data/jetbot_class.txt',
         "model_image_size": (416, 416, 3),
         "confidence": 0.5,

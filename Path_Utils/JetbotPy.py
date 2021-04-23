@@ -16,7 +16,7 @@ class Decider():
         self.position = [0,0]
         self.heading = 0
         self.visited = []
-        self.Horizon = 7  # A tuning parameter
+        self.Horizon = 4  # A tuning parameter
         self.Angle = pi / 12  # Turning angle at each step
         self.StepLen = 20  # Step Length, should be shorter than Horizon
         self.if_write = if_write  # if you want to write the command to target dir

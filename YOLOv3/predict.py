@@ -8,9 +8,13 @@ from Path_Utils import plotting, env
 
 yolo = YOLO()
 
-img = 'YOLOv3/img/1.jpg'
+img = 'YOLOv3/img/080.jpg'
 try:
     image = Image.open(img)
+    # image = Image.fromarray(img).convert('RGB')
+    # print('image size:', image.size)
+    x, y = image.size
+    image.thumbnail((x//2,y//2))
 except:
     print('Open Error! Try again!')
 else:

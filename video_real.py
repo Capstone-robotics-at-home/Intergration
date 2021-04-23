@@ -71,7 +71,7 @@ while(True):
                 path, visited = astar.searching()
                 Path_Found = True
             except UnboundLocalError:
-                Ratio -= 0.3
+                Ratio -= 0.1
                 print('Error, try change the size, ratio = ', Ratio)
 
         plot = plotting.Plotting(s_start, s_goal, obstacle_ls)

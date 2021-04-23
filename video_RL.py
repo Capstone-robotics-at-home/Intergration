@@ -57,9 +57,9 @@ def RL_search(objects):
     # initialize RL brain
     dqn = DQNnet('DQNnet.pkl') 
     info = 0  # initialize info with 0 means nothing happened
-
+    trial = 0 # trial times 
     # try until find solution
-    while info is not 1: 
+    while info is not 1 and trial < 10: 
         s = env.reset(objects['Jetbot'][0],objects['Grabber'][0])
         ep_r = 0 
         step = 0 
@@ -72,6 +72,7 @@ def RL_search(objects):
             ep_r += r 
             if done: 
                 print('\rEpisode information number: ', info,end ='')
+                trial += 1 
                 if info == 1:
                     print('\n================================ Path Found =================================')
                     trajectory = env.decider.get_trajectory()
@@ -80,8 +81,8 @@ def RL_search(objects):
                 break
             s = s_
     if info is not 1:
-        print('================================ERROR: path not found================================')
-        return [0], [()]
+        print('\n================================path not found================================')
+        return [0], [s_start]
     
     return [],[()]
 
@@ -90,7 +91,7 @@ if __name__ == '__main__':
     # get the camera 
     # capture=cv2.VideoCapture("1.mp4" Or 0)
     # capture=cv2.VideoCapture("YOLOv3/img/b.mp4") 
-    # capture=cv2.VideoCapture(1) 
+    capture=cv2.VideoCapture(0) 
 
     decider = Decider(if_write = False)  # use it to send command only 
 
@@ -101,8 +102,8 @@ if __name__ == '__main__':
     while(True):
         t1 = time.time()
         # get one frame
-        frame = window_capture() 
-        # ref,frame=capture.read()  # if you are using camera to get frame, use this line and also uncomment the line above with respect to capture.
+        # frame = window_capture() 
+        ref,frame=capture.read()  # if you are using camera to get frame, use this line and also uncomment the line above with respect to capture.
         # # change format，BGRtoRGB
         frame = cv2.cvtColor(frame,cv2.COLOR_BGR2RGB)
         # # change to Image
