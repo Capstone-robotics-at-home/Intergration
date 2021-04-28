@@ -1,18 +1,21 @@
 import numpy as np 
 
 class Env:
-    def __init__(self, obstacles, margin_size = [0,0,0,0]):
-        self.x_range = 51  # size of the background 
-        self.y_range = 31 
+    def __init__(self, obstacles, margin_size = [0,0,0,0], modification = 1):
+        """ 
+        The environment class for Astar
+        The modificaiton added because of the noise during detecting 
+        might cause the searching error 
+        """
+
         # self.motions = [(2,0),(-2,0),(0,2),(0,-2),
         #                 (1,1),(1,-1),(-1,1),(-1,-1)]
-        self.motions = 20 * np.array(
+        self.motions = 6 * np.array(
             [(5,0),(-5,0),(0,5),(0,-5),
             (3,4),(3,-4),(-3,4),(-3,4),                   
             (4,3),(4,-3),(-4,3),(-3,4),]
         )
-
-
+        self.ratio = modification
         self.obs = self.obs_map_mod(obstacles, margin_size)
 
     def update_obs(self, obs):
@@ -23,8 +26,8 @@ class Env:
         :return: map of obstacles  '''
 
         # the input style: [[(623, 165), 546, 700, 288, 42]], [834, 1073, 636, 287]
-        margin_x = (margin_size[1] - margin_size[0]) // 2 
-        margin_y = (margin_size[2] - margin_size[3]) // 2 
+        margin_x = int((margin_size[1] - margin_size[0]) // 2 * self.ratio)
+        margin_y = int((margin_size[2] - margin_size[3]) // 2 * self.ratio)
         if obs_ls == []:
             raise ValueError('Obstacle list is empty')
         obs = set() 
@@ -35,41 +38,5 @@ class Env:
                     obs.add((x,y))
 
         return obs 
-
-    def obs_map(self):
-        """  
-        Initialize the obstacles' positions
-        return: map of obstacles 
-        """
-        x = self.x_range 
-        y = self.y_range 
-        obs = set()
-
-        # margins 
-        for i in range(x):
-            obs.add((i,0))
-        for i in range(x):
-            obs.add((i,y-1))
-
-        for i in range(y):
-            obs.add((0,i))
-        for i in range(y):
-            obs.add((x-1,i))
-
-        # walls 
-        for i in range(10, 21):
-            obs.add((i, 15))
-        for i in range(15):
-            obs.add((20, i))
-
-        for i in range(15, 30):
-            obs.add((30, i))
-        for i in range(16):
-            obs.add((40, i))
-
-        return obs 
-
-
-
 
         

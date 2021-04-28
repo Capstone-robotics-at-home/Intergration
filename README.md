@@ -8,6 +8,7 @@
   * YOLO model should be put into it. Model for different applications have uploaded to our Google drive.(Mujoco, matplotlib, real_world)
   * The target directory (Mujoco or Jetbot) should be changed 
   * Some constant (like turnning angle, Astar ratio) might need to be be changed according to physical measurement 
+* The conclusion file in the conclusion folder is recommended to be checked if you are new to this.
 
 # Run the video_real.py file
 * It can get picture from jpg/png or window_capture or camera. 
@@ -28,4 +29,3 @@
 * Before running this, make sure that your DQNnet.pkl is trained for your own environment
 * Hopefully it can be tested well in real environment 
 * Good luck.
-

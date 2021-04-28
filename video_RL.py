@@ -37,8 +37,11 @@ def change_cmd2str(cmd):
         return 'right'
     elif cmd == 2:
         return 'left'
-    else: 
-        print('ERROR!')
+    elif cmd == -1: 
+        print('waiting')
+        return '0'
+    else:
+        print('COMMAND ERROR: ', cmd)
         return '0'
 
 
@@ -52,7 +55,9 @@ def RL_search(objects):
     s_goal = objects['Target'][0]
     if type(obstacle_ls[0]) == type(()):  # if there is only one obstacle:
         obstacle_ls = [obstacle_ls]
-    env = CartEnv(s_start, s_goal, obstacle_ls) 
+    jetbot_size = objects['Jetbot'][-4:] 
+    Ratio = 0.5
+    env = CartEnv(s_start, s_goal, obstacle_ls, jetbot_size, Ratio) 
 
     # initialize RL brain
     dqn = DQNnet('DQNnet.pkl') 
@@ -82,9 +87,9 @@ def RL_search(objects):
             s = s_
     if info is not 1:
         print('\n================================path not found================================')
-        return [0], [s_start]
+        return -1, [s_start]
     
-    return [],[()]
+    return -1,[s_start]
 
 if __name__ == '__main__':
     yolo = YOLO()
@@ -102,8 +107,8 @@ if __name__ == '__main__':
     while(True):
         t1 = time.time()
         # get one frame
-        # frame = window_capture() 
-        ref,frame=capture.read()  # if you are using camera to get frame, use this line and also uncomment the line above with respect to capture.
+        frame = window_capture() 
+        # ref,frame=capture.read()  # if you are using camera to get frame, use this line and also uncomment the line above with respect to capture.
         # # change format，BGRtoRGB
         frame = cv2.cvtColor(frame,cv2.COLOR_BGR2RGB)
         # # change to Image
@@ -127,7 +132,7 @@ if __name__ == '__main__':
             obstacle_ls = objects['Obstacle']
             if type(obstacle_ls[0]) == type(()):  # if there is only one obstacle:
                 obstacle_ls = [obstacle_ls]
-            jetbot_size = objects['Jetbot'][-4:] 
+            # jetbot_size = objects['Jetbot'][-4:] 
 
             sol, trj = RL_search(objects) 
             decider.cmd = change_cmd2str(sol)
