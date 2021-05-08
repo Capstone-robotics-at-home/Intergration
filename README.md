@@ -1,11 +1,11 @@
 # Integration Repo for our Capstone project
 ## Before using this 
-* It is recommended to get to know previous work in this project
+* It is recommended to get to know related repositories in this project
   * Path planning 
   * YOLO-V3 (video_yolo.py is a demo for YOLO)
   * Simulation
 * Some modifications are needed according to different environment
-  * YOLO model should be put into it. Model for different applications have uploaded to our Google drive.(Mujoco, matplotlib, real_world)
+  * YOLO model should be put into it. Model for different applications have uploaded to our Google drive.(Mujoco, plt, real)
   * The target directory (Mujoco or Jetbot) should be changed 
   * Some constant (like turnning angle, Astar ratio) might need to be be changed according to physical measurement 
 * The conclusion file in the conclusion folder is recommended to be checked if you are new to this.
@@ -28,4 +28,7 @@
 ## Run video_RL.py file 
 * Before running this, make sure that your DQNnet.pkl is trained for your own environment
 * Hopefully it can be tested well in real environment 
-* Good luck.
+
+# Good luck.
+* You can contact Zion by email: ziondeng@berkeley.edu
+* Go bears!

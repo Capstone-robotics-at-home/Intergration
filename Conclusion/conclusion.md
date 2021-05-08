@@ -26,7 +26,7 @@
 * Add margins based on the size of the Jetbot to the Obstacle so that the Jetbot itself can be regarded as a point. 
 ![Astar](astar.jpg)
 
-## Simple control algorithm for Jebbot movement
+## Simple control algorithm for Jetbot movement
 * Every time the system get the trajectory that the Jetbot should move, the Jetbot will act accordingly. 
 * The idea is simple: Turn until the heading is within the region of the desired heading, then move forward. 
 * Horizon(see the blue line of the picture below) is introduced in the system and the desired heading is determined by the end point of the horizon. 
@@ -39,6 +39,8 @@
 
 # What to expect in the future: 
 ## A faster deep learning neural network for object detection. 
-* YOLO-v3 is not the most efficient network for object detection. Maybe you can use other algorithms like YOLO-tiny or faster RCNN. Check the efficiency and accuracy of the algorithm on JetsonNano. 
-* More efficient and robust control algorithms for Jetbot movement. There should be members in your team whose track is robotics and autonomous systems. Use ideas from ME231 or ME290S for trajectory following. Algorighms like PID, MPC, LQR can be useful. 
-* The whole system should be working on the JetsonNano finally. In that case, the only remote device would be the camera. One thing to mention is that the Jetbot python environment is quite different from usual python environment(at least from what I know). Almost all the packages are installed in the ipython environment and can only be used in jupyter lab. 
+YOLO-v3 is not the most efficient network for object detection. Maybe you can use other algorithms like YOLO-tiny or faster RCNN. Check the efficiency and accuracy of the algorithm on JetsonNano. 
+## More efficient and robust control algorithms for Jetbot movement. 
+There should be members in your team whose track is robotics and autonomous systems. Use ideas from ME231 or ME290S for trajectory following. Algorithms like PID, MPC, LQR can be useful. 
+## Improvement for faster computation
+The whole system should be working on the JetsonNano finally. In that case, the only remote device would be the camera. One thing to mention is that the Jetbot python environment is quite different from usual python environment(at least from what I know). Almost all the packages are installed in the ipython environment and can only be used in jupyter lab. 

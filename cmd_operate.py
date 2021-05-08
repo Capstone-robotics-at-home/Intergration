@@ -7,7 +7,7 @@
 import time 
 import socket
 
-PATH = '../Capstone_Simulation/cmd.txt'
+PATH = '../Capstone_Simulation/cmd.txt'  # remember to change it to the right directory
 def cmd_writer(s_cmd): 
     target = open(PATH,'w')
     target.write(s_cmd)

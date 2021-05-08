@@ -1,3 +1,8 @@
+'''
+ # @ Author: Zion Deng
+ # @ Description: Astar class for path-finding, adopted from github 
+ '''
+
 import math
 import heapq
 from Path_Utils import env, plotting

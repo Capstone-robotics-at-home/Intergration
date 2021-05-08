@@ -1,6 +1,9 @@
-#-------------------------------------#
-# Use screen recoder to monitor Mujoco 
-#-------------------------------------#
+'''
+ # @ Author: Zion Deng
+ # @ Description: System real-time integration with Astar path-finding
+ # remember to choose the right way to get frame (line 37-39, see also README) 
+ '''
+
 import os,sys 
 sys.path.append(os.path.dirname(os.path.abspath(__file__)) +
                 "/YOLOv3")
@@ -32,8 +35,8 @@ while(True):
     # get one frame
     try:
         # frame = cv2.imread('pic.jpg',1)  # if you want to read image from 2D simulation, use this 
-        # frame = window_capture() # if you want to use screen capture to get frame, use this
-        ref,frame=capture.read()  # if you are using camera to get frame, use this line and also uncomment the line above with respect to capture.
+        frame = window_capture() # if you want to use screen capture to get frame, use this
+        # ref,frame=capture.read()  # if you are using camera to get frame, use this line and also uncomment the line above with respect to capture.
     except:
         continue
     # # change format，BGRtoRGB
